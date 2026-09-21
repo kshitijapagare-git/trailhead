@@ -25,6 +25,8 @@ export interface Hike {
   trailId: string;
   date: string;
   durationMinutes: number;
+  notes?: string;
+  rating: number;
 }
 
 export type HikeInput = Omit<Hike, "id">;

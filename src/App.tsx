@@ -27,7 +27,12 @@ function seed() {
     regionId: region.id,
     elevationGainM: 850,
   });
-  createHike({ trailId: trail.id, date: "2026-01-05", durationMinutes: 120 });
+  createHike({
+    trailId: trail.id,
+    date: "2026-01-05",
+    durationMinutes: 120,
+    rating: 4,
+  });
 }
 
 seed();
