@@ -1,15 +1,19 @@
 import { useState } from "react";
-import type { Difficulty, Trail, TrailInput } from "../entities/types";
+import type { Difficulty, Trail, TrailInput, TrailRegion } from "../entities/types";
 
 interface TrailFormProps {
   initialValue?: Trail;
+  regions: TrailRegion[];
   onSubmit: (input: TrailInput) => void;
   onCancel?: () => void;
 }
 
 const DIFFICULTIES: Difficulty[] = ["easy", "moderate", "hard"];
 
-export function TrailForm({ initialValue, onSubmit, onCancel }: TrailFormProps) {
+export function TrailForm({ initialValue, regions, onSubmit, onCancel }: TrailFormProps) {
+  const [trailRegionId, setTrailRegionId] = useState(
+    initialValue?.trailRegionId ?? regions[0]?.id ?? ""
+  );
   const [name, setName] = useState(initialValue?.name ?? "");
   const [location, setLocation] = useState(initialValue?.location ?? "");
   const [distanceKm, setDistanceKm] = useState(String(initialValue?.distanceKm ?? ""));
@@ -17,7 +21,11 @@ export function TrailForm({ initialValue, onSubmit, onCancel }: TrailFormProps) 
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSubmit({ name, location, distanceKm: Number(distanceKm), difficulty });
+    onSubmit({ name, location, distanceKm: Number(distanceKm), difficulty, trailRegionId });
+  }
+
+  if (regions.length === 0) {
+    return <p className="helper-text">Add a region first to log trails.</p>;
   }
 
   return (
@@ -34,6 +42,18 @@ export function TrailForm({ initialValue, onSubmit, onCancel }: TrailFormProps) 
             Location<span className="required">*</span>
           </span>
           <input value={location} onChange={(e) => setLocation(e.target.value)} required />
+        </label>
+        <label className="field">
+          <span className="field-label">
+            Region<span className="required">*</span>
+          </span>
+          <select value={trailRegionId} onChange={(e) => setTrailRegionId(e.target.value)} required>
+            {regions.map((region) => (
+              <option key={region.id} value={region.id}>
+                {region.name}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="field">
           <span className="field-label">
