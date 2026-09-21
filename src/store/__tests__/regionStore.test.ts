@@ -71,6 +71,8 @@ describe("regionStore", () => {
       distanceKm: 1,
       difficulty: "easy",
       trailRegionId: r1.id,
+      regionId: r1.id,
+      elevationGainM: 100,
     });
 
     createTrail({
@@ -79,6 +81,8 @@ describe("regionStore", () => {
       distanceKm: 2,
       difficulty: "hard",
       trailRegionId: r2.id,
+      regionId: r2.id,
+      elevationGainM: 200,
     });
 
     expect(listTrails()).toHaveLength(2);
@@ -88,6 +92,6 @@ describe("regionStore", () => {
 
     const remaining = listTrails();
     expect(remaining).toHaveLength(1);
-    expect(remaining[0].trailRegionId).toBe(r2.id);
+    expect(remaining[0].regionId).toBe(r2.id);
   });
 });

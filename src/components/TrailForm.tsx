@@ -11,17 +11,28 @@ interface TrailFormProps {
 const DIFFICULTIES: Difficulty[] = ["easy", "moderate", "hard"];
 
 export function TrailForm({ initialValue, regions, onSubmit, onCancel }: TrailFormProps) {
-  const [trailRegionId, setTrailRegionId] = useState(
-    initialValue?.trailRegionId ?? regions[0]?.id ?? ""
+  const [regionId, setRegionId] = useState(
+    initialValue?.regionId ?? regions[0]?.id ?? ""
   );
   const [name, setName] = useState(initialValue?.name ?? "");
   const [location, setLocation] = useState(initialValue?.location ?? "");
   const [distanceKm, setDistanceKm] = useState(String(initialValue?.distanceKm ?? ""));
+  const [elevationGainM, setElevationGainM] = useState(
+    String(initialValue?.elevationGainM ?? "")
+  );
   const [difficulty, setDifficulty] = useState<Difficulty>(initialValue?.difficulty ?? "easy");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSubmit({ name, location, distanceKm: Number(distanceKm), difficulty, trailRegionId });
+    onSubmit({
+      name,
+      location,
+      distanceKm: Number(distanceKm),
+      elevationGainM: Number(elevationGainM),
+      difficulty,
+      trailRegionId: regionId,
+      regionId,
+    });
   }
 
   if (regions.length === 0) {
@@ -47,7 +58,7 @@ export function TrailForm({ initialValue, regions, onSubmit, onCancel }: TrailFo
           <span className="field-label">
             Region<span className="required">*</span>
           </span>
-          <select value={trailRegionId} onChange={(e) => setTrailRegionId(e.target.value)} required>
+          <select value={regionId} onChange={(e) => setRegionId(e.target.value)} required>
             {regions.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
@@ -65,6 +76,19 @@ export function TrailForm({ initialValue, regions, onSubmit, onCancel }: TrailFo
             min="0"
             value={distanceKm}
             onChange={(e) => setDistanceKm(e.target.value)}
+            required
+          />
+        </label>
+        <label className="field">
+          <span className="field-label">
+            Elevation gain (m)<span className="required">*</span>
+          </span>
+          <input
+            type="number"
+            step="1"
+            min="0"
+            value={elevationGainM}
+            onChange={(e) => setElevationGainM(e.target.value)}
             required
           />
         </label>

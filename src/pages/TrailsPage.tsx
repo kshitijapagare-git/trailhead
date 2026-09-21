@@ -27,6 +27,7 @@ export function TrailsPage() {
               <th>Region</th>
               <th>Location</th>
               <th>Distance</th>
+              <th>Elevation</th>
               <th>Difficulty</th>
               <th>Actions</th>
             </tr>
@@ -35,9 +36,10 @@ export function TrailsPage() {
             {trails.map((trail) => (
               <tr key={trail.id}>
                 <td>{trail.name}</td>
-                <td>{getRegion(trail.trailRegionId)?.name ?? "Unknown region"}</td>
+                <td>{getRegion(trail.regionId)?.name ?? "Unknown region"}</td>
                 <td>📍 {trail.location}</td>
                 <td>📏 {trail.distanceKm} km</td>
+                <td>⛰️ {trail.elevationGainM} m</td>
                 <td>
                   <span className={`badge badge-${trail.difficulty}`}>{trail.difficulty}</span>
                 </td>

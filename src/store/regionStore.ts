@@ -66,7 +66,7 @@ export function updateRegion(
 
 export function deleteRegion(id: string): boolean {
   // Cascade delete trails for this region
-  const trailsForRegion = listTrails().filter((t) => t.trailRegionId === id);
+  const trailsForRegion = listTrails().filter((t) => t.regionId === id);
   trailsForRegion.forEach((t) => deleteTrail(t.id));
 
   return regions.delete(id);
