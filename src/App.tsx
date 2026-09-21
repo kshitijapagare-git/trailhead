@@ -24,6 +24,8 @@ function seed() {
     distanceKm: 8.5,
     difficulty: "moderate",
     trailRegionId: region.id,
+    regionId: region.id,
+    elevationGainM: 850,
   });
   createHike({ trailId: trail.id, date: "2026-01-05", durationMinutes: 120 });
 }

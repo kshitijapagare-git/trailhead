@@ -20,6 +20,9 @@ describe("hikeStore", () => {
       location: "Boulder, CO",
       distanceKm: 8.5,
       difficulty: "moderate",
+      trailRegionId: "1",
+      regionId: "1",
+      elevationGainM: 850,
     }).id;
   });
 
