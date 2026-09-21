@@ -6,6 +6,9 @@ export function Layout() {
       <aside className="sidebar">
         <div className="brand">🏞️ Trailhead</div>
         <nav className="side-nav">
+          <NavLink to="/regions" className={({ isActive }) => (isActive ? "active" : "")}>
+            🏞️ Regions
+          </NavLink>
           <NavLink to="/trails" className={({ isActive }) => (isActive ? "active" : "")}>
             🗺️ Trails
           </NavLink>

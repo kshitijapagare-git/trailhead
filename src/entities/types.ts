@@ -6,9 +6,17 @@ export interface Trail {
   location: string;
   distanceKm: number;
   difficulty: Difficulty;
+  trailRegionId: string;
 }
 
 export type TrailInput = Omit<Trail, "id">;
+
+export interface TrailRegion {
+  id: string;
+  name: string;
+}
+
+export type TrailRegionInput = Omit<TrailRegion, "id">;
 
 export interface Hike {
   id: string;

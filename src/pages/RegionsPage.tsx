@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { deleteTrail, listTrails } from "../store/trailStore";
-import { getRegion } from "../store/regionStore";
+import { deleteRegion, listRegions } from "../store/regionStore";
 
-export function TrailsPage() {
-  const [trails, setTrails] = useState(() => listTrails());
+export function RegionsPage() {
+  const [regions, setRegions] = useState(() => listRegions());
 
   function handleDelete(id: string) {
-    deleteTrail(id);
-    setTrails(listTrails());
+    deleteRegion(id);
+    setRegions(listRegions());
   }
 
   return (
     <section>
       <div className="section-header">
-        <h2>Trails</h2>
-        <Link to="/trails/new" className="btn-primary">
-          + Add trail
+        <h2>Regions</h2>
+        <Link to="/regions/new" className="btn-primary">
+          + Add region
         </Link>
       </div>
       <div className="table-card">
@@ -24,29 +23,19 @@ export function TrailsPage() {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Region</th>
-              <th>Location</th>
-              <th>Distance</th>
-              <th>Difficulty</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {trails.map((trail) => (
-              <tr key={trail.id}>
-                <td>{trail.name}</td>
-                <td>{getRegion(trail.trailRegionId)?.name ?? "Unknown region"}</td>
-                <td>📍 {trail.location}</td>
-                <td>📏 {trail.distanceKm} km</td>
-                <td>
-                  <span className={`badge badge-${trail.difficulty}`}>{trail.difficulty}</span>
-                </td>
+            {regions.map((region) => (
+              <tr key={region.id}>
+                <td>{region.name}</td>
                 <td>
                   <div className="row-actions">
                     <Link
-                      to={`/trails/${trail.id}/edit`}
+                      to={`/regions/${region.id}/edit`}
                       className="icon-btn"
-                      aria-label="Edit trail"
+                      aria-label="Edit region"
                       title="Edit"
                     >
                       ✏️
@@ -54,9 +43,9 @@ export function TrailsPage() {
                     <button
                       type="button"
                       className="icon-btn danger"
-                      aria-label="Delete trail"
+                      aria-label="Delete region"
                       title="Delete"
-                      onClick={() => handleDelete(trail.id)}
+                      onClick={() => handleDelete(region.id)}
                     >
                       🗑️
                     </button>

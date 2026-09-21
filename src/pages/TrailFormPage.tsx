@@ -2,14 +2,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { TrailForm } from "../components/TrailForm";
 import type { TrailInput } from "../entities/types";
 import { createTrail, getTrail, updateTrail } from "../store/trailStore";
+import { listRegions } from "../store/regionStore";
 
 export function TrailFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const existing = id ? getTrail(id) : undefined;
+  const regions = listRegions();
 
   if (id && !existing) {
     return <p className="helper-text">Trail not found.</p>;
+  }
+
+  if (regions.length === 0) {
+    return <p className="helper-text">Add a region first to log trails.</p>;
   }
 
   function handleSubmit(input: TrailInput) {
@@ -46,6 +52,7 @@ export function TrailFormPage() {
         </div>
         <TrailForm
           initialValue={existing}
+          regions={regions}
           onSubmit={handleSubmit}
           onCancel={() => navigate("/trails")}
         />

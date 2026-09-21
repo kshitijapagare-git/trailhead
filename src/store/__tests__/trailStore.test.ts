@@ -19,6 +19,7 @@ describe("trailStore", () => {
       location: "Boulder, CO",
       distanceKm: 8.5,
       difficulty: "moderate",
+      trailRegionId: "1",
     });
 
     expect(trail.id).toBeDefined();
@@ -31,6 +32,7 @@ describe("trailStore", () => {
       location: "Boulder, CO",
       distanceKm: 8.5,
       difficulty: "moderate",
+      trailRegionId: "1",
     });
 
     expect(getTrail(created.id)).toEqual(created);
@@ -38,8 +40,20 @@ describe("trailStore", () => {
   });
 
   it("lists all trails", () => {
-    createTrail({ name: "Trail A", location: "A", distanceKm: 1, difficulty: "easy" });
-    createTrail({ name: "Trail B", location: "B", distanceKm: 2, difficulty: "hard" });
+    createTrail({
+      name: "Trail A",
+      location: "A",
+      distanceKm: 1,
+      difficulty: "easy",
+      trailRegionId: "1",
+    });
+    createTrail({
+      name: "Trail B",
+      location: "B",
+      distanceKm: 2,
+      difficulty: "hard",
+      trailRegionId: "1",
+    });
 
     expect(listTrails()).toHaveLength(2);
   });
@@ -50,6 +64,7 @@ describe("trailStore", () => {
       location: "Boulder, CO",
       distanceKm: 8.5,
       difficulty: "moderate",
+      trailRegionId: "1",
     });
 
     const updated = updateTrail(created.id, { distanceKm: 9.2 });
@@ -68,6 +83,7 @@ describe("trailStore", () => {
       location: "Boulder, CO",
       distanceKm: 8.5,
       difficulty: "moderate",
+      trailRegionId: "1",
     });
 
     expect(deleteTrail(created.id)).toBe(true);
