@@ -1,8 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { TrailForm } from "../components/TrailForm";
-import type { TrailInput } from "../entities/types";
+import type { Hike, TrailInput } from "../entities/types";
 import { createTrail, getTrail, updateTrail } from "../store/trailStore";
 import { listRegions } from "../store/regionStore";
+import { listHikesByTrail } from "../store/hikeStore";
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
 
 export function TrailFormPage() {
   const { id } = useParams();
@@ -17,6 +26,8 @@ export function TrailFormPage() {
   if (regions.length === 0) {
     return <p className="helper-text">Add a region first to log trails.</p>;
   }
+
+  const trailHikes: Hike[] = existing ? listHikesByTrail(existing.id) : [];
 
   function handleSubmit(input: TrailInput) {
     if (existing) {
@@ -57,6 +68,40 @@ export function TrailFormPage() {
           onCancel={() => navigate("/trails")}
         />
       </div>
+      {existing && (
+        <div className="table-card" style={{ marginTop: "1.25rem" }}>
+          <div className="details-card-header">
+            <span>🥾</span>
+            <span>Hikes on this trail</span>
+          </div>
+          {trailHikes.length === 0 ? (
+            <p className="helper-text" style={{ padding: "16px 20px" }}>
+              No hikes logged yet.
+            </p>
+          ) : (
+            <div style={{ overflowX: "auto" }}>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {trailHikes.map((hike) => (
+                    <tr key={hike.id}>
+                      <td>📅 {formatDate(hike.date)}</td>
+                      <td>⏱️ {hike.durationMinutes}m</td>
+                      <td>{hike.notes || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }

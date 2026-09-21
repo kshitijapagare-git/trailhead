@@ -29,6 +29,14 @@ export function listHikes(): Hike[] {
   return Array.from(hikes.values());
 }
 
+export function listHikesByTrail(trailId: string): Hike[] {
+  return listHikes().filter((hike) => hike.trailId === trailId);
+}
+
+export function listHikesByTrail(trailId: string): Hike[] {
+  return listHikes().filter((hike) => hike.trailId === trailId);
+}
+
 export function updateHike(id: string, input: Partial<HikeInput>): Hike | undefined {
   const existing = hikes.get(id);
   if (!existing) return undefined;

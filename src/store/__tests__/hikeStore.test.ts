@@ -6,6 +6,7 @@ import {
   deleteHike,
   getHike,
   listHikes,
+  listHikesByTrail,
   updateHike,
 } from "../hikeStore";
 
@@ -76,6 +77,55 @@ describe("hikeStore", () => {
     });
 
     expect(listHikes()).toHaveLength(2);
+  });
+
+  it("lists hikes by trail id", () => {
+    const otherTrailId = createTrail({
+      name: "Other Trail",
+      location: "Denver, CO",
+      distanceKm: 5,
+      difficulty: "easy",
+      trailRegionId: "1",
+      regionId: "1",
+      elevationGainM: 100,
+    }).id;
+
+    createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
+    createHike({
+      trailId,
+      date: "2026-01-06",
+      durationMinutes: 90,
+      rating: 5,
+    });
+    createHike({
+      trailId: otherTrailId,
+      date: "2026-01-07",
+      durationMinutes: 60,
+      rating: 3,
+    });
+
+    expect(listHikesByTrail(trailId)).toHaveLength(2);
+    expect(listHikesByTrail(trailId).every((h) => h.trailId === trailId)).toBe(true);
+    expect(listHikesByTrail(otherTrailId)).toHaveLength(1);
+  });
+
+  it("returns an empty array when a trail has no hikes", () => {
+    const otherTrailId = createTrail({
+      name: "No Hikes Trail",
+      location: "Austin, TX",
+      distanceKm: 12,
+      difficulty: "hard",
+      trailRegionId: "1",
+      regionId: "1",
+      elevationGainM: 1200,
+    }).id;
+
+    expect(listHikesByTrail(otherTrailId)).toEqual([]);
   });
 
   it("updates a hike", () => {
