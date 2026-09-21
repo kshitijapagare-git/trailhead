@@ -14,10 +14,18 @@ export function HikeForm({ trails, initialValue, onSubmit, onCancel }: HikeFormP
   const [durationMinutes, setDurationMinutes] = useState(
     String(initialValue?.durationMinutes ?? "")
   );
+  const [rating, setRating] = useState<number>(initialValue?.rating ?? 1);
+  const [notes, setNotes] = useState(initialValue?.notes ?? "");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSubmit({ trailId, date, durationMinutes: Number(durationMinutes) });
+    onSubmit({
+      trailId,
+      date,
+      durationMinutes: Number(durationMinutes),
+      rating,
+      notes: notes.trim().length ? notes : undefined,
+    });
   }
 
   if (trails.length === 0) {
@@ -56,6 +64,22 @@ export function HikeForm({ trails, initialValue, onSubmit, onCancel }: HikeFormP
             onChange={(e) => setDurationMinutes(e.target.value)}
             required
           />
+        </label>
+        <label className="field">
+          <span className="field-label">
+            Rating<span className="required">*</span>
+          </span>
+          <select value={rating} onChange={(e) => setRating(Number(e.target.value))} required>
+            {[1, 2, 3, 4, 5].map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="field" style={{ gridColumn: "span 2" }}>
+          <span className="field-label">Notes</span>
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
         </label>
       </div>
       <div className="form-footer">

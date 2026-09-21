@@ -27,7 +27,12 @@ describe("hikeStore", () => {
   });
 
   it("creates a hike linked to an existing trail", () => {
-    const hike = createHike({ trailId, date: "2026-01-05", durationMinutes: 120 });
+    const hike = createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
 
     expect(hike.id).toBeDefined();
     expect(hike.trailId).toBe(trailId);
@@ -35,26 +40,51 @@ describe("hikeStore", () => {
 
   it("rejects creating a hike for a missing trail", () => {
     expect(() =>
-      createHike({ trailId: "missing", date: "2026-01-05", durationMinutes: 120 })
+      createHike({
+        trailId: "missing",
+        date: "2026-01-05",
+        durationMinutes: 120,
+        rating: 4,
+      })
     ).toThrow(/Trail not found/);
   });
 
   it("gets a hike by id", () => {
-    const created = createHike({ trailId, date: "2026-01-05", durationMinutes: 120 });
+    const created = createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
 
     expect(getHike(created.id)).toEqual(created);
     expect(getHike("missing")).toBeUndefined();
   });
 
   it("lists all hikes", () => {
-    createHike({ trailId, date: "2026-01-05", durationMinutes: 120 });
-    createHike({ trailId, date: "2026-01-06", durationMinutes: 90 });
+    createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
+    createHike({
+      trailId,
+      date: "2026-01-06",
+      durationMinutes: 90,
+      rating: 5,
+    });
 
     expect(listHikes()).toHaveLength(2);
   });
 
   it("updates a hike", () => {
-    const created = createHike({ trailId, date: "2026-01-05", durationMinutes: 120 });
+    const created = createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
 
     const updated = updateHike(created.id, { durationMinutes: 150 });
 
@@ -62,7 +92,12 @@ describe("hikeStore", () => {
   });
 
   it("rejects updating a hike to a missing trail", () => {
-    const created = createHike({ trailId, date: "2026-01-05", durationMinutes: 120 });
+    const created = createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
 
     expect(() => updateHike(created.id, { trailId: "missing" })).toThrow(/Trail not found/);
   });
@@ -71,8 +106,57 @@ describe("hikeStore", () => {
     expect(updateHike("missing", { durationMinutes: 1 })).toBeUndefined();
   });
 
+  it("rejects rating less than 1", () => {
+    expect(() =>
+      createHike({
+        trailId,
+        date: "2026-01-05",
+        durationMinutes: 120,
+        rating: 0,
+      })
+    ).toThrow(/Rating must be an integer between 1 and 5/);
+  });
+
+  it("rejects rating greater than 5", () => {
+    expect(() =>
+      createHike({
+        trailId,
+        date: "2026-01-05",
+        durationMinutes: 120,
+        rating: 6,
+      })
+    ).toThrow(/Rating must be an integer between 1 and 5/);
+  });
+
+  it("rejects non-integer rating", () => {
+    expect(() =>
+      createHike({
+        trailId,
+        date: "2026-01-05",
+        durationMinutes: 120,
+        rating: 3.5,
+      })
+    ).toThrow(/Rating must be an integer between 1 and 5/);
+  });
+
+  it("allows notes to be omitted", () => {
+    const created = createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
+
+    expect(created.notes).toBeUndefined();
+  });
+
   it("deletes a hike", () => {
-    const created = createHike({ trailId, date: "2026-01-05", durationMinutes: 120 });
+    const created = createHike({
+      trailId,
+      date: "2026-01-05",
+      durationMinutes: 120,
+      rating: 4,
+    });
 
     expect(deleteHike(created.id)).toBe(true);
     expect(getHike(created.id)).toBeUndefined();

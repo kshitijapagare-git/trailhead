@@ -42,6 +42,8 @@ export function HikesPage() {
               <th>Trail</th>
               <th>Date</th>
               <th>Duration</th>
+              <th>Rating</th>
+              <th>Notes</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -51,6 +53,8 @@ export function HikesPage() {
                 <td>{getTrail(hike.trailId)?.name ?? "Unknown trail"}</td>
                 <td>📅 {formatDate(hike.date)}</td>
                 <td>⏱️ {formatDuration(hike.durationMinutes)}</td>
+                <td>⭐ {hike.rating}</td>
+                <td>{hike.notes || "—"}</td>
                 <td>
                   <div className="row-actions">
                     <Link
