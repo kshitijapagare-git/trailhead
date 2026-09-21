@@ -182,6 +182,10 @@ section {
   background: rgba(207, 34, 46, 0.12);
 }
 
+.sortable-header {
+  cursor: pointer;
+}
+
 .row-actions {
   display: flex;
   gap: 6px;
